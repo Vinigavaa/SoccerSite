@@ -391,14 +391,14 @@ const PlayerManagement: React.FC = () => {
           });
         }
       }}>
-        <DialogContent className="sm:max-w-2xl bg-white">
-          <DialogHeader className="border-b pb-4">
+        <DialogContent className="sm:max-w-2xl max-w-[95vw] bg-white overflow-y-auto max-h-[90vh] p-4 sm:p-6">
+          <DialogHeader className="border-b pb-4 sticky top-0 bg-white z-10">
             <DialogTitle className="text-xl text-atletico-bordo font-bold">
               {isEditingPlayer ? 'Editar Jogador' : 'Adicionar Novo Jogador'}
             </DialogTitle>
           </DialogHeader>
           
-          <div className="py-6">
+          <div className="py-4 sm:py-6">
             <div className="mb-6 flex flex-col sm:flex-row items-center gap-6">
               <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-dashed border-atletico-gold p-1 bg-gray-50 flex-shrink-0">
                 <img
@@ -538,30 +538,30 @@ const PlayerManagement: React.FC = () => {
             </div>
           </div>
           
-          <DialogFooter className="border-t pt-4">
+          <DialogFooter className="border-t pt-4 sticky bottom-0 bg-white z-10 mt-4 flex flex-col-reverse sm:flex-row gap-3 sm:gap-2">
             <Button
               variant="outline"
               onClick={() => {
                 setIsAddingPlayer(false);
                 setIsEditingPlayer(false);
               }}
-              className="border-gray-300 text-gray-700"
+              className="border-gray-300 text-gray-700 w-full sm:w-auto h-12 sm:h-10"
               disabled={isSubmitting}
             >
-              Cancelar
+              Voltar
             </Button>
             <Button 
               onClick={savePlayer}
               disabled={isSubmitting}
-              className="bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo"
+              className="bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo w-full sm:w-auto h-12 sm:h-10 font-bold"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Salvando...
                 </>
               ) : (
-                'Salvar'
+                'Salvar Jogador'
               )}
             </Button>
           </DialogFooter>

@@ -15,7 +15,9 @@ import {
   User, 
   Check, 
   X,
-  Newspaper
+  Newspaper,
+  FileText,
+  AlertTriangle
 } from 'lucide-react';
 import { 
   Dialog, 
@@ -294,7 +296,7 @@ const NewsManagement: React.FC = () => {
 
       {/* Dialog para criar/editar notícia */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-2xl bg-gray-50 border border-atletico-gold/30">
+        <DialogContent className="sm:max-w-2xl max-w-[95vw] bg-gray-50 border border-atletico-gold/30 p-4 sm:p-6 overflow-y-auto max-h-[90vh]">
           <DialogHeader className="border-b border-gray-200 pb-4">
             <DialogTitle className="text-atletico-bordo text-xl">
               {formMode === 'create' ? 'Nova Notícia' : 'Editar Notícia'}
@@ -302,41 +304,49 @@ const NewsManagement: React.FC = () => {
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-gray-800 font-medium">Título</Label>
+              <Label htmlFor="title" className="text-gray-800 font-medium flex items-center">
+                <Newspaper className="h-4 w-4 mr-1 text-atletico-bordo" />
+                Título
+              </Label>
               <Input
                 id="title"
                 name="title"
                 value={newsInput.title}
                 onChange={handleInputChange}
                 placeholder="Digite o título da notícia"
-                className="border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900"
+                className="border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900 h-11"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="author" className="text-gray-800 font-medium">Autor</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-atletico-bordo h-4 w-4" />
-                <Input
-                  id="author"
-                  name="author"
-                  value={newsInput.author}
-                  onChange={handleInputChange}
-                  placeholder="Nome do autor"
-                  className="pl-10 border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900"
-                  required
-                />
-              </div>
+              <Label htmlFor="author" className="text-gray-800 font-medium flex items-center">
+                <User className="h-4 w-4 mr-1 text-atletico-bordo" />
+                Autor
+              </Label>
+              <Input
+                id="author"
+                name="author"
+                value={newsInput.author}
+                onChange={handleInputChange}
+                placeholder="Nome do autor"
+                className="border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900 h-11"
+                required
+              />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-gray-800 font-medium">Conteúdo</Label>
+              <Label htmlFor="content" className="text-gray-800 font-medium flex items-center">
+                <span className="flex items-center">
+                  <FileText className="h-4 w-4 mr-1 text-atletico-bordo" />
+                  Conteúdo
+                </span>
+              </Label>
               <Textarea
                 id="content"
                 name="content"
                 value={newsInput.content}
                 onChange={handleInputChange}
                 placeholder="Digite o conteúdo da notícia"
-                className="min-h-[200px] border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900"
+                className="min-h-[150px] sm:min-h-[200px] border-gray-300 focus:border-atletico-gold focus:ring-atletico-gold bg-white text-gray-900 resize-y"
                 required
               />
             </div>
@@ -347,24 +357,26 @@ const NewsManagement: React.FC = () => {
                 onCheckedChange={handleCheckboxChange}
                 className="border-atletico-bordo text-atletico-gold focus:ring-atletico-gold"
               />
-              <Label htmlFor="is_published" className="cursor-pointer text-gray-800">
+              <Label htmlFor="is_published" className="cursor-pointer text-gray-800 flex items-center">
+                <Check className="h-4 w-4 mr-1 text-green-500" />
                 Publicar imediatamente
               </Label>
             </div>
-            <DialogFooter className="border-t border-gray-200 pt-4 mt-4">
+            <DialogFooter className="flex flex-col sm:flex-row gap-3 border-t border-gray-200 pt-4 mt-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
                 disabled={isSaving}
-                className="border-atletico-bordo text-atletico-bordo hover:bg-atletico-bordo/10"
+                className="border-atletico-bordo text-atletico-bordo hover:bg-atletico-bordo/10 w-full sm:w-auto order-2 sm:order-1"
               >
+                <X className="mr-2 h-4 w-4" />
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={isSaving}
-                className="bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo"
+                className="bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo w-full sm:w-auto order-1 sm:order-2"
               >
                 {isSaving ? (
                   <>
@@ -385,21 +397,24 @@ const NewsManagement: React.FC = () => {
 
       {/* Dialog para confirmar exclusão */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-gray-50 border border-red-200">
+        <DialogContent className="sm:max-w-md max-w-[95vw] bg-gray-50 border border-red-200 p-4 sm:p-6">
           <DialogHeader className="border-b border-gray-200 pb-4">
-            <DialogTitle className="text-red-600">Confirmar Exclusão</DialogTitle>
+            <DialogTitle className="text-red-600 flex items-center">
+              <AlertTriangle className="h-5 w-5 mr-2" />
+              Confirmar Exclusão
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <p className="text-gray-800">Tem certeza que deseja excluir a notícia "{selectedNews?.title}"?</p>
             <p className="text-sm text-gray-500">Esta ação não pode ser desfeita.</p>
           </div>
-          <DialogFooter className="border-t border-gray-200 pt-4">
+          <DialogFooter className="flex flex-col sm:flex-row gap-3 border-t border-gray-200 pt-4">
             <Button
               type="button"
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(false)}
               disabled={isSaving}
-              className="border-gray-300 text-gray-700"
+              className="border-gray-300 text-gray-700 w-full sm:w-auto order-2 sm:order-1"
             >
               Cancelar
             </Button>
@@ -408,7 +423,7 @@ const NewsManagement: React.FC = () => {
               onClick={handleDelete}
               disabled={isSaving}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 w-full sm:w-auto order-1 sm:order-2"
             >
               {isSaving ? (
                 <>

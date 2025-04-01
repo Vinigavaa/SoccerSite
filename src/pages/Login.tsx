@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { EyeIcon, EyeOffIcon, UserIcon, KeyIcon, Lock, AlertTriangle } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, UserIcon, KeyIcon, Lock, AlertTriangle, HomeIcon } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -135,87 +135,105 @@ const Login: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-atletico-bordo flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-6 bg-white shadow-xl">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto bg-atletico-gold rounded-full flex items-center justify-center mb-4">
-            <Lock className="h-8 w-8 text-atletico-bordo" />
-          </div>
-          <h1 className="text-2xl font-bold text-atletico-bordo">Área Administrativa</h1>
-          <p className="text-gray-500 mt-2">Atlético Maneiro</p>
-        </div>
+    <div className="min-h-screen bg-atletico-bordo flex items-center justify-center p-4 sm:p-6">
+      <Card className="w-full max-w-md p-4 sm:p-6 bg-white shadow-xl relative overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute top-0 right-0 w-full h-24 bg-atletico-bordo-dark/10 -skew-y-6 transform origin-top-right z-0"></div>
         
-        {errorMessage && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-start">
-            <AlertTriangle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
-            <p className="text-red-600 text-sm">{errorMessage}</p>
-          </div>
-        )}
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="username" className="text-sm font-medium text-gray-700">
-              Nome de usuário
-            </label>
-            <div className="relative">
-              <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                id="username"
-                type="text"
-                placeholder="Digite seu usuário"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="pl-10 bg-white border-gray-300"
-                disabled={isSubmitting || isBlocked}
-                required
-              />
+        <div className="relative z-10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto bg-atletico-gold rounded-full flex items-center justify-center mb-4 shadow-md">
+              <Lock className="h-8 w-8 text-atletico-bordo" />
             </div>
+            <h1 className="text-2xl font-bold text-atletico-bordo">Área Administrativa</h1>
+            <p className="text-gray-500 mt-2">SELECAIXA</p>
           </div>
           
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Senha
-            </label>
-            <div className="relative">
-              <KeyIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Digite sua senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 bg-white border-gray-300"
-                disabled={isSubmitting || isBlocked}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                tabIndex={-1}
-              >
-                {showPassword ? (
-                  <EyeOffIcon className="h-4 w-4" />
-                ) : (
-                  <EyeIcon className="h-4 w-4" />
-                )}
-              </button>
+          {errorMessage && (
+            <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-md flex items-start">
+              <AlertTriangle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
+              <p className="text-red-600 text-sm">{errorMessage}</p>
             </div>
-          </div>
+          )}
           
-          <Button 
-            type="submit" 
-            className="w-full mt-6 bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo font-bold"
-            disabled={isLoading || isSubmitting || isBlocked}
-          >
-            {isLoading || isSubmitting ? "Entrando..." : "Entrar"}
-          </Button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <a href="/" className="text-atletico-bordo hover:text-atletico-gold text-sm">
-            Voltar para o site
-          </a>
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+            <div className="space-y-2">
+              <label htmlFor="username" className="text-sm font-medium text-gray-700 flex items-center">
+                <UserIcon className="inline-block h-4 w-4 mr-1 text-atletico-bordo" />
+                Nome de usuário
+              </label>
+              <div className="relative">
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Digite seu usuário"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="pl-3 bg-white border-gray-300 h-11"
+                  disabled={isSubmitting || isBlocked}
+                  required
+                  autoComplete="username"
+                  autoFocus
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium text-gray-700 flex items-center">
+                <KeyIcon className="inline-block h-4 w-4 mr-1 text-atletico-bordo" />
+                Senha
+              </label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Digite sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pr-10 bg-white border-gray-300 h-11"
+                  disabled={isSubmitting || isBlocked}
+                  required
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {showPassword ? (
+                    <EyeOffIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="w-full h-11 mt-6 text-base bg-atletico-gold hover:bg-atletico-gold-light text-atletico-bordo font-bold transition-all duration-300"
+              disabled={isLoading || isSubmitting || isBlocked}
+            >
+              {isLoading || isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Entrando...
+                </span>
+              ) : "Entrar"}
+            </Button>
+          </form>
+          
+          <div className="mt-8 flex justify-center">
+            <a href="/" className="flex items-center text-atletico-bordo hover:text-atletico-gold transition-colors">
+              <HomeIcon className="h-4 w-4 mr-1" />
+              <span>Voltar para o site</span>
+            </a>
+          </div>
         </div>
       </Card>
     </div>

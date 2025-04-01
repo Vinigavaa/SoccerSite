@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Facebook, Instagram, Twitter, Mail } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Mail, SendIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Footer: React.FC = () => {
   const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Inscrição realizada!",
-      description: "Você agora receberá nossas novidades por email.",
-    });
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "E-mail inválido",
+        description: "Por favor, insira um e-mail válido.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulando tempo de resposta do servidor
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setEmail('');
+      toast({
+        title: "Inscrição realizada!",
+        description: "Você agora receberá nossas novidades por email.",
+      });
+    }, 600);
   };
   
   return (
     <footer className="bg-atletico-bordo-dark text-atletico-white border-t-4 border-atletico-gold">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-8">
           <div>
             <h3 className="text-atletico-gold font-display text-2xl font-bold mb-4">SELECAIXA</h3>
             <p className="mb-6 text-atletico-white/80">
@@ -66,15 +85,41 @@ const Footer: React.FC = () => {
             <p className="mb-4 text-atletico-white/80">
               Inscreva-se para receber as últimas notícias e atualizações.
             </p>
-            <form onSubmit={handleSubscribe} className="space-y-2">
-              <Input 
-                placeholder="Seu email" 
-                className="bg-white/10 border-atletico-gold/30 placeholder:text-atletico-white/50" 
-                required
-              />
-              <Button type="submit" className="w-full bg-atletico-gold text-atletico-bordo hover:bg-atletico-gold-light">
-                Inscrever-se
-              </Button>
+            <form onSubmit={handleSubscribe} className="space-y-4 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex-grow">
+                  <Input 
+                    placeholder="Seu email" 
+                    className="bg-white/10 border-atletico-gold/30 placeholder:text-atletico-white/50 h-11 text-base"
+                    required
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-label="Email para newsletter"
+                    autoComplete="email"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="glass-button sm:flex-shrink-0"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Enviando...
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      Inscrever-se
+                      <SendIcon className="ml-2 h-4 w-4" />
+                    </span>
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>
